@@ -6,6 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 abstract class BaseVM : ViewModel() {
@@ -26,4 +30,8 @@ abstract class BaseVM : ViewModel() {
             }
         }
     }
+
+    protected fun <T> Flow<T>.launchSafelyIn(scope: CoroutineScope): Job = this
+        .catch { handleError(it) }
+        .launchIn(scope)
 }
