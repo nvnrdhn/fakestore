@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,7 +20,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -31,20 +31,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nvnrdhn.fakestore.R
+import com.nvnrdhn.fakestore.base.BaseScreen
+import com.nvnrdhn.fakestore.base.BaseScreen_Preview
 
 @Composable
 fun ProductListScreen(
     vm: ProductListVM = viewModel()
 ) {
-    val profileSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
-
     LaunchedEffect(vm) {
         vm.fetchProductList()
     }
 
-    Scaffold(
+    BaseScreen(
+        vm = vm,
         topBar = {
             ProductListTopBar(
                 onProfileClicked = { vm.toggleProfileSheet() }
@@ -56,22 +55,39 @@ fun ProductListScreen(
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            if (vm.state.isProfileSheetVisible) {
-                ModalBottomSheet(
-                    modifier = Modifier.padding(
-                        top = innerPadding.calculateTopPadding()
-                    ),
-                    onDismissRequest = { vm.toggleProfileSheet() },
-                    sheetState = profileSheetState
+        ProductListContent(
+            state = vm.state,
+            onProfileSheetDismissed = { vm.toggleProfileSheet() },
+            innerPadding = innerPadding
+        )
+    }
+}
+
+@Composable
+private fun ProductListContent(
+    state: ProductListState = ProductListState(),
+    onProfileSheetDismissed: () -> Unit = {},
+    innerPadding: PaddingValues = PaddingValues()
+) {
+    val profileSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    Box(
+        modifier = Modifier.padding(innerPadding)
+    ) {
+        if (state.isProfileSheetVisible) {
+            ModalBottomSheet(
+                modifier = Modifier.padding(
+                    top = innerPadding.calculateTopPadding()
+                ),
+                onDismissRequest = onProfileSheetDismissed,
+                sheetState = profileSheetState
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxHeight()
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxHeight()
-                    ) {
-                        Text("this is profile bottom sheet")
-                    }
+                    Text("this is profile bottom sheet")
                 }
             }
         }
@@ -82,7 +98,6 @@ fun ProductListScreen(
 private fun ProductListTopBar(
     onProfileClicked: () -> Unit = {}
 ) {
-
     CenterAlignedTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
@@ -144,5 +159,14 @@ private fun ProductCartButton(
 @Preview
 @Composable
 fun ProductListScreen_Preview() {
-    ProductListScreen()
+    BaseScreen_Preview(
+        topBar = {
+            ProductListTopBar()
+        },
+        floatingActionButton = {
+            ProductCartButton()
+        }
+    ) {
+        ProductListContent()
+    }
 }

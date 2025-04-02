@@ -7,4 +7,5 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_product_list">ProductListActivity</string>
     <string name="title_activity_cart_detail">CartDetailActivity</string>
+    <string name="base_error_message">"Error: %1$s"</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.nvnrdhn.fakestore.ui.login
 
 import androidx.lifecycle.ViewModel
+import com.nvnrdhn.fakestore.base.BaseVM
 import com.nvnrdhn.fakestore.helper.NavigationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -8,7 +9,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginVM @Inject constructor(
     private val navigationHelper: NavigationHelper
-) : ViewModel() {
+) : BaseVM() {
     val state = LoginState()
 
     fun login(onLoggedIn: (Boolean) -> Unit) {
