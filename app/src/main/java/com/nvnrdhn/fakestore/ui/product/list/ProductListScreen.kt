@@ -125,6 +125,16 @@ private fun ProductCartButton() {
             tint = Color.White,
             contentDescription = null
         )
+
+        Text(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .background(
+                    color = Color.Yellow,
+                    shape = RoundedCornerShape(100)
+                ),
+            text = "50"
+        )
     }
 }
 
