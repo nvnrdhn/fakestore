@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -115,7 +115,7 @@ private fun ProductCartButton(
             .padding(8.dp)
             .size(40.dp)
             .background(
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(100)
             )
             .clickable { onClicked() }
@@ -124,7 +124,7 @@ private fun ProductCartButton(
             modifier = Modifier
                 .align(Alignment.Center),
             imageVector = Icons.Default.ShoppingCart,
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.onPrimary,
             contentDescription = null
         )
 
@@ -132,10 +132,11 @@ private fun ProductCartButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .background(
-                    color = Color.Yellow,
+                    color = MaterialTheme.colorScheme.tertiary,
                     shape = RoundedCornerShape(100)
                 ),
-            text = "50"
+            text = "50",
+            color = MaterialTheme.colorScheme.onTertiary
         )
     }
 }
