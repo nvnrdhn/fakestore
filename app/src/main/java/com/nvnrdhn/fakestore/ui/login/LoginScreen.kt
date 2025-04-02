@@ -33,23 +33,23 @@ import com.nvnrdhn.fakestore.R
 @Composable
 fun LoginScreen(
     vm: LoginVM = viewModel(),
-    onLoggedIn: () -> Unit = {}
+    finish: () -> Unit = {}
 ) {
     val layoutDirection = LocalLayoutDirection.current
 
     LaunchedEffect(vm) {
-        if (vm.isLoggedIn()) onLoggedIn()
+        if (vm.isLoggedIn()) finish()
     }
 
-    Scaffold {
+    Scaffold { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = it.calculateTopPadding() + 24.dp,
-                    start = it.calculateStartPadding(layoutDirection) + 32.dp,
-                    end = it.calculateEndPadding(layoutDirection) + 32.dp,
-                    bottom = it.calculateBottomPadding()
+                    top = innerPadding.calculateTopPadding() + 24.dp,
+                    start = innerPadding.calculateStartPadding(layoutDirection) + 32.dp,
+                    end = innerPadding.calculateEndPadding(layoutDirection) + 32.dp,
+                    bottom = innerPadding.calculateBottomPadding()
                 ),
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
@@ -71,7 +71,7 @@ fun LoginScreen(
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { vm.login(onLoggedIn) }
+                onClick = { vm.login { isLoggedIn -> if (isLoggedIn) finish() } }
             ) {
                 Text(
                     text = stringResource(R.string.login_button_text)

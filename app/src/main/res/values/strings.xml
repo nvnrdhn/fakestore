@@ -6,4 +6,5 @@
     <string name="login_button_text">"Login"</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_product_list">ProductListActivity</string>
+    <string name="title_activity_cart_detail">CartDetailActivity</string>
 </resources>

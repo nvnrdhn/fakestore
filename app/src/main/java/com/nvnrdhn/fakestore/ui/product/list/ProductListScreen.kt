@@ -51,7 +51,9 @@ fun ProductListScreen(
             )
         },
         floatingActionButton = {
-            ProductCartButton()
+            ProductCartButton(
+                onClicked = { vm.onCartClicked() }
+            )
         }
     ) { innerPadding ->
         Box(
@@ -105,7 +107,9 @@ private fun ProductListTopBar(
 }
 
 @Composable
-private fun ProductCartButton() {
+private fun ProductCartButton(
+    onClicked: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .padding(8.dp)
@@ -114,9 +118,7 @@ private fun ProductCartButton() {
                 color = Color.Black,
                 shape = RoundedCornerShape(100)
             )
-            .clickable {
-
-            }
+            .clickable { onClicked() }
     ) {
         Icon(
             modifier = Modifier
