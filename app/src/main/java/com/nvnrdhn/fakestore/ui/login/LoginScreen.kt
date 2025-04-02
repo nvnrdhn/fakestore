@@ -118,7 +118,6 @@ private fun LoginTextField(
         leadingIcon = {
             Icon(
                 imageVector = leadingIcon,
-                tint = Color.Black,
                 contentDescription = null
             )
         },
