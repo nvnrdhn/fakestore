@@ -1,4 +1,4 @@
-package com.nvnrdhn.fakestore
+package com.nvnrdhn.fakestore.ui.product.list
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,9 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.nvnrdhn.fakestore.ui.theme.FakeStoreTheme
+import com.nvnrdhn.fakestore.ui.product.list.ui.theme.FakeStoreTheme
 
-class MainActivity : ComponentActivity() {
+class ProductListActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
