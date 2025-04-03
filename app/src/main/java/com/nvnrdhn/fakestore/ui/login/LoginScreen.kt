@@ -12,16 +12,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,7 +48,7 @@ fun LoginScreen(
             state = vm.state,
             onUsernameChanged = { vm.onUsernameChanged(it) },
             onPasswordChanged = { vm.onPasswordChanged(it) },
-            onLogin = { vm.login { isLoggedIn -> if (isLoggedIn) finish() } },
+            onLoginClicked = { vm.login { isLoggedIn -> if (isLoggedIn) finish() } },
             innerPadding = innerPadding
         )
     }
@@ -56,7 +59,7 @@ private fun LoginScreenContent(
     state: LoginState = LoginState(),
     onUsernameChanged: (String) -> Unit = {},
     onPasswordChanged: (String) -> Unit = {},
-    onLogin: () -> Unit = {},
+    onLoginClicked: () -> Unit = {},
     innerPadding: PaddingValues = PaddingValues()
 ) {
     val layoutDirection = LocalLayoutDirection.current
@@ -70,14 +73,23 @@ private fun LoginScreenContent(
                 end = innerPadding.calculateEndPadding(layoutDirection) + 32.dp,
                 bottom = innerPadding.calculateBottomPadding()
             ),
-        verticalArrangement = Arrangement.spacedBy(32.dp)
+        verticalArrangement = Arrangement.spacedBy(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = stringResource(R.string.login_welcome_message),
+            style = MaterialTheme.typography.displayLarge,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold
+        )
+
         LoginTextField(
             value = state.username,
             onValueChange = { onUsernameChanged(it) },
             placeholder = stringResource(R.string.login_username_placeholder),
             leadingIcon = Icons.Default.Person,
-            visualTransformation = VisualTransformation.None
+            visualTransformation = VisualTransformation.None,
+            supportingText = stringResource(R.string.login_username_hint)
         )
 
         LoginTextField(
@@ -85,16 +97,21 @@ private fun LoginScreenContent(
             onValueChange = { onPasswordChanged(it) },
             placeholder = stringResource(R.string.login_password_placeholder),
             leadingIcon = Icons.Default.Lock,
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            supportingText = stringResource(R.string.login_password_hint)
         )
 
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { onLogin() }
-        ) {
-            Text(
-                text = stringResource(R.string.login_button_text)
-            )
+        if (state.loginLoading) {
+            CircularProgressIndicator()
+        } else {
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { onLoginClicked() }
+            ) {
+                Text(
+                    text = stringResource(R.string.login_button_text)
+                )
+            }
         }
     }
 }
@@ -106,7 +123,8 @@ private fun LoginTextField(
     onValueChange: (String) -> Unit = {},
     placeholder: String = "",
     leadingIcon: ImageVector,
-    visualTransformation: VisualTransformation
+    visualTransformation: VisualTransformation,
+    supportingText: String = ""
 ) {
     OutlinedTextField(
         modifier = Modifier
@@ -122,7 +140,15 @@ private fun LoginTextField(
             )
         },
         visualTransformation = visualTransformation,
-        maxLines = 1
+        maxLines = 1,
+        supportingText = {
+            if (supportingText.isNotEmpty()) {
+                Text(
+                    text = supportingText,
+                    style = MaterialTheme.typography.labelSmall
+                )
+            }
+        }
     )
 }
 

@@ -10,4 +10,7 @@
     <string name="base_error_message">"Error: %1$s"</string>
     <string name="product_rating_text">"%1$.1f • %2$d reviews"</string>
     <string name="retry_button_text">"Retry"</string>
+    <string name="login_welcome_message">"Welcome to Fake Store!"</string>
+    <string name="login_username_hint">"Use \"donero\""</string>
+    <string name="login_password_hint">"Use \"ewedon\""</string>
 </resources>
