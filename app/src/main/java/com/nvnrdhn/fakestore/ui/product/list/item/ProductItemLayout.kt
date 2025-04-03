@@ -3,6 +3,7 @@ package com.nvnrdhn.fakestore.ui.product.list.item
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -58,18 +59,25 @@ fun ProductItemLayout(
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        GlideImage(
-            model = item.image,
-            contentDescription = null,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
                 .background(
                     color = Color.White
-                ),
-            contentScale = ContentScale.Fit,
-            loading = placeholder(ColorPainter(MaterialTheme.colorScheme.primary)),
-            transition = CrossFade
-        )
+                )
+        ) {
+            GlideImage(
+                model = item.image,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                contentScale = ContentScale.Fit,
+                loading = placeholder(ColorPainter(MaterialTheme.colorScheme.primary)),
+                transition = CrossFade
+            )
+        }
 
         Column(
             modifier = Modifier
