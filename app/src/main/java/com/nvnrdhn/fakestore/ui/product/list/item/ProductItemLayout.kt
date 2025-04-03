@@ -2,6 +2,7 @@ package com.nvnrdhn.fakestore.ui.product.list.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,10 +38,14 @@ import com.nvnrdhn.fakestore.model.ProductRatingModel
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ProductItemLayout(
-    item: ProductModel
+    item: ProductModel,
+    onClicked: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
+            .clickable {
+                onClicked()
+            }
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(16.dp)

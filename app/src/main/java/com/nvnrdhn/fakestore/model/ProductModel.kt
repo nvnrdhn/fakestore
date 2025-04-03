@@ -6,5 +6,6 @@ data class ProductModel(
     val price: PriceModel = PriceModel(),
     val description: String = "",
     val image: String = "",
-    val rating: ProductRatingModel = ProductRatingModel()
+    val rating: ProductRatingModel = ProductRatingModel(),
+    val category: String = ""
 )

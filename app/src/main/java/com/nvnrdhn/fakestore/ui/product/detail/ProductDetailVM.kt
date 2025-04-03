@@ -1,4 +1,4 @@
-package com.nvnrdhn.fakestore.ui.product.list
+package com.nvnrdhn.fakestore.ui.product.detail
 
 import androidx.lifecycle.viewModelScope
 import com.nvnrdhn.fakestore.base.BaseVM
@@ -14,38 +14,25 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductListVM @Inject constructor(
+class ProductDetailVM @Inject constructor(
     private val navigationHelper: NavigationHelper,
     private val productRepo: ProductRepo,
     private val productUseCase: ProductUseCase
 ) : BaseVM() {
-    val state = ProductListState()
+    val state = ProductDetailState()
 
-    fun fetchProductList() {
+    fun fetchProductDetail(productId: Int) {
         loading = true
 
-        productRepo.getProductList()
-            .map { productUseCase.mapProductResponse(it) }
+        productRepo.getProductDetail(productId)
             .flowOn(Dispatchers.IO)
-            .onEach {
-                state.productList.clear()
-                state.productList.addAll(it)
-            }
-            .onCompletion {
-                loading = false
-            }
+            .map { productUseCase.mapProductItem(it) }
+            .onEach { state.product = it }
+            .onCompletion { loading = false }
             .launchSafelyIn(viewModelScope)
-    }
-
-    fun toggleProfileSheet() {
-        state.isProfileSheetVisible = !state.isProfileSheetVisible
     }
 
     fun onCartClicked() {
         navigationHelper.navigateToCartDetail()
-    }
-
-    fun onProductClicked(productId: Int) {
-        navigationHelper.navigateToProductDetail(productId)
     }
 }
