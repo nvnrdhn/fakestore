@@ -74,8 +74,8 @@ fun ProductItemLayout(
         Column(
             modifier = Modifier
                 .padding(
-                    start = 4.dp,
-                    end = 4.dp,
+                    start = 8.dp,
+                    end = 8.dp,
                     bottom = 8.dp
                 )
         ) {
@@ -90,7 +90,7 @@ fun ProductItemLayout(
                 modifier = Modifier
                     .padding(top = 4.dp),
                 text = item.price.toDisplayString(),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary
             )
 
@@ -101,7 +101,8 @@ fun ProductItemLayout(
                 Icon(
                     modifier = Modifier.size(12.dp),
                     imageVector = Icons.Default.Star,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
 
                 Text(
@@ -110,7 +111,7 @@ fun ProductItemLayout(
                         item.rating.rate,
                         item.rating.count
                     ),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.labelSmall
                 )
             }
         }
