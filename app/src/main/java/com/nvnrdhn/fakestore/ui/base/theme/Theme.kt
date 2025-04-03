@@ -1,6 +1,5 @@
-package com.nvnrdhn.fakestore.ui.theme
+package com.nvnrdhn.fakestore.ui.base.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

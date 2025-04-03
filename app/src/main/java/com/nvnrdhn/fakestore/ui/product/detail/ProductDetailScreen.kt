@@ -45,10 +45,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.nvnrdhn.fakestore.R
-import com.nvnrdhn.fakestore.base.BaseScreen
-import com.nvnrdhn.fakestore.base.BaseScreen_Preview
 import com.nvnrdhn.fakestore.model.PriceModel
 import com.nvnrdhn.fakestore.model.ProductModel
+import com.nvnrdhn.fakestore.ui.base.BaseScreen
+import com.nvnrdhn.fakestore.ui.base.BaseScreen_Preview
 
 @Composable
 fun ProductDetailScreen(

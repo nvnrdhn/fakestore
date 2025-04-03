@@ -2,11 +2,11 @@ package com.nvnrdhn.fakestore.ui.product.detail
 
 import androidx.lifecycle.viewModelScope
 import com.nvnrdhn.fakestore.R
-import com.nvnrdhn.fakestore.base.BaseVM
 import com.nvnrdhn.fakestore.helper.NavigationHelper
 import com.nvnrdhn.fakestore.helper.ResourceHelper
 import com.nvnrdhn.fakestore.repo.cart.CartRepo
 import com.nvnrdhn.fakestore.repo.product.ProductRepo
+import com.nvnrdhn.fakestore.ui.base.BaseVM
 import com.nvnrdhn.fakestore.usecase.CartUseCase
 import com.nvnrdhn.fakestore.usecase.ProductUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

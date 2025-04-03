@@ -1,4 +1,4 @@
-package com.nvnrdhn.fakestore.base
+package com.nvnrdhn.fakestore.ui.base
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nvnrdhn.fakestore.R
-import com.nvnrdhn.fakestore.ui.theme.FakeStoreTheme
+import com.nvnrdhn.fakestore.ui.base.theme.FakeStoreTheme
 import java.net.UnknownHostException
 
 

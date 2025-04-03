@@ -1,4 +1,4 @@
-package com.nvnrdhn.fakestore.base
+package com.nvnrdhn.fakestore.ui.base
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue

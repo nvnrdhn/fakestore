@@ -1,9 +1,9 @@
 package com.nvnrdhn.fakestore.ui.product.list
 
 import androidx.lifecycle.viewModelScope
-import com.nvnrdhn.fakestore.base.BaseVM
 import com.nvnrdhn.fakestore.helper.NavigationHelper
 import com.nvnrdhn.fakestore.repo.product.ProductRepo
+import com.nvnrdhn.fakestore.ui.base.BaseVM
 import com.nvnrdhn.fakestore.usecase.ProductUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

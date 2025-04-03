@@ -1,11 +1,10 @@
 package com.nvnrdhn.fakestore.ui.login
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nvnrdhn.fakestore.base.BaseVM
 import com.nvnrdhn.fakestore.datamodel.LoginRequestDataModel
 import com.nvnrdhn.fakestore.helper.NavigationHelper
 import com.nvnrdhn.fakestore.repo.auth.AuthRepo
+import com.nvnrdhn.fakestore.ui.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn

@@ -1,4 +1,4 @@
-package com.nvnrdhn.fakestore.ui.theme
+package com.nvnrdhn.fakestore.ui.base.theme
 
 import androidx.compose.ui.graphics.Color
 

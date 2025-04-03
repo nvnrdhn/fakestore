@@ -31,8 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nvnrdhn.fakestore.R
-import com.nvnrdhn.fakestore.base.BaseScreen
-import com.nvnrdhn.fakestore.base.BaseScreen_Preview
+import com.nvnrdhn.fakestore.ui.base.BaseScreen
+import com.nvnrdhn.fakestore.ui.base.BaseScreen_Preview
 
 @Composable
 fun LoginScreen(
