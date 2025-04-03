@@ -16,4 +16,6 @@
     <string name="title_activity_product_detail">Product Detail</string>
     <string name="add_to_cart_button_text">"Add to Cart"</string>
     <string name="product_desc_title">"Product Description"</string>
+    <string name="product_add_success_message">"Product added to cart successfully"</string>
+    <string name="product_add_error_unknown_message">"Error while adding product to cart"</string>
 </resources>

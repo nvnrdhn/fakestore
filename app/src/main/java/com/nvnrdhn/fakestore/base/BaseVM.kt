@@ -7,13 +7,17 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseVM : ViewModel() {
     var loading by mutableStateOf(false)
@@ -37,13 +41,21 @@ abstract class BaseVM : ViewModel() {
         }
     }
 
-    protected fun launchSafely(coroutine: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch {
-            try {
+    protected fun launchSafely(
+        coroutineContext: CoroutineContext = EmptyCoroutineContext,
+        coroutine: suspend CoroutineScope.() -> Unit
+    ) {
+        viewModelScope.launch(coroutineContext) {
+            withContext(Dispatchers.Main) {
                 error = null
+            }
+
+            try {
                 coroutine()
             } catch (error: Throwable) {
-                handleError(error)
+                withContext(Dispatchers.Main) {
+                    handleError(error)
+                }
             }
         }
     }

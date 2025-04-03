@@ -3,9 +3,6 @@ package com.nvnrdhn.fakestore.ui.product.detail
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,8 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -39,9 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -80,7 +73,8 @@ fun ProductDetailScreen(
         ProductDetailContent(
             modifier = Modifier
                 .fillMaxSize(),
-            state = vm.state
+            state = vm.state,
+            onAddToCartClicked = { vm.addToCart() }
         )
     }
 }
@@ -89,7 +83,8 @@ fun ProductDetailScreen(
 @Composable
 fun ProductDetailContent(
     modifier: Modifier = Modifier,
-    state: ProductDetailState = ProductDetailState()
+    state: ProductDetailState = ProductDetailState(),
+    onAddToCartClicked: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
 
@@ -221,7 +216,7 @@ fun ProductDetailContent(
                 Button(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    onClick = {}
+                    onClick = onAddToCartClicked
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
