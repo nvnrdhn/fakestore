@@ -1,6 +1,7 @@
 package com.nvnrdhn.fakestore.usecase
 
 import com.nvnrdhn.fakestore.datamodel.ProductDataModel
+import com.nvnrdhn.fakestore.model.PriceModel
 import com.nvnrdhn.fakestore.model.ProductModel
 import com.nvnrdhn.fakestore.model.ProductRatingModel
 import javax.inject.Inject
@@ -11,7 +12,9 @@ class ProductListUseCase @Inject constructor() {
             id = it.id,
             title = it.title,
             description = it.description,
-            price = it.price,
+            price = PriceModel(
+                value = it.price
+            ),
             image = it.image,
             rating = ProductRatingModel(
                 rate = it.rating.rate,

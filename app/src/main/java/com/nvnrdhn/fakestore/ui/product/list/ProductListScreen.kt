@@ -4,6 +4,7 @@ package com.nvnrdhn.fakestore.ui.product.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -37,6 +42,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nvnrdhn.fakestore.R
 import com.nvnrdhn.fakestore.base.BaseScreen
 import com.nvnrdhn.fakestore.base.BaseScreen_Preview
+import com.nvnrdhn.fakestore.model.PriceModel
+import com.nvnrdhn.fakestore.model.ProductModel
 import com.nvnrdhn.fakestore.ui.product.list.item.ProductItemLayout
 
 @Composable
@@ -74,7 +81,7 @@ private fun ProductListContent(
     onProfileSheetDismissed: () -> Unit = {},
     innerPadding: PaddingValues = PaddingValues()
 ) {
-    val lazyListState = rememberLazyListState()
+    val lazyListState = rememberLazyStaggeredGridState()
     val profileSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -82,9 +89,13 @@ private fun ProductListContent(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn(
+        LazyVerticalStaggeredGrid(
             modifier = Modifier.fillMaxSize(),
-            state = lazyListState
+            state = lazyListState,
+            columns = StaggeredGridCells.Fixed(2),
+            verticalItemSpacing = 8.dp,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(8.dp)
         ) {
             items(state.productList) { item ->
                 ProductItemLayout(
@@ -144,8 +155,8 @@ private fun ProductCartButton(
 ) {
     Box(
         modifier = Modifier
-            .padding(8.dp)
-            .size(40.dp)
+            .padding(4.dp)
+            .size(48.dp)
             .background(
                 color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(100)
@@ -154,7 +165,8 @@ private fun ProductCartButton(
     ) {
         Icon(
             modifier = Modifier
-                .align(Alignment.Center),
+                .align(Alignment.Center)
+                .size(28.dp),
             imageVector = Icons.Default.ShoppingCart,
             tint = MaterialTheme.colorScheme.onPrimary,
             contentDescription = null
@@ -184,6 +196,31 @@ fun ProductListScreen_Preview() {
             ProductCartButton()
         }
     ) {
-        ProductListContent()
+        ProductListContent(
+            state = ProductListState().apply {
+                productList.addAll(
+                    listOf(
+                        ProductModel(
+                            id = 1,
+                            title = "Test",
+                            description = "Test test est test",
+                            price = PriceModel(512.53)
+                        ),
+                        ProductModel(
+                            id = 2,
+                            title = "Test 2",
+                            description = "Test test est test",
+                            price = PriceModel(512.53)
+                        ),
+                        ProductModel(
+                            id = 3,
+                            title = "Test 3",
+                            description = "Test test est test",
+                            price = PriceModel(512.53)
+                        )
+                    )
+                )
+            }
+        )
     }
 }
