@@ -1,5 +1,6 @@
 package com.nvnrdhn.fakestore.base
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,14 +13,28 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 abstract class BaseVM : ViewModel() {
     var loading by mutableStateOf(false)
     var error by mutableStateOf<Throwable?>(null)
 
+    val snackbarHostState = SnackbarHostState()
+
     protected fun handleError(error: Throwable) {
         this.loading = false
-        this.error = error
+
+        when (error) {
+            is HttpException -> {
+                viewModelScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = error.response()?.errorBody()?.string() ?: ""
+                    )
+                }
+            }
+
+            else -> this.error = error
+        }
     }
 
     protected fun launchSafely(coroutine: suspend CoroutineScope.() -> Unit) {
