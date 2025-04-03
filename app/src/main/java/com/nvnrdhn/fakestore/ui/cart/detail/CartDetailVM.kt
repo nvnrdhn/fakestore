@@ -37,4 +37,8 @@ class CartDetailVM @Inject constructor(
             cartRepo.deleteCart(item).launchSafelyIn(viewModelScope)
         }
     }
+
+    fun checkout() {
+
+    }
 }

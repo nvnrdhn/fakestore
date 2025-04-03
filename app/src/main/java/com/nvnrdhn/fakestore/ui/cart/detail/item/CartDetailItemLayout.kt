@@ -109,7 +109,9 @@ fun CartDetailItemLayout(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         IconButton(
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier
+                                .size(20.dp)
+                                .padding(start = 4.dp),
                             onClick = { onItemRemove(item) }
                         ) {
                             Icon(
@@ -126,7 +128,9 @@ fun CartDetailItemLayout(
                         )
 
                         IconButton(
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier
+                                .size(20.dp)
+                                .padding(end = 4.dp),
                             onClick = { onItemAdd(item) }
                         ) {
                             Icon(

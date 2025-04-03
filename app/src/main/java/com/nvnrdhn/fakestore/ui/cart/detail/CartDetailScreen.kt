@@ -1,16 +1,27 @@
 package com.nvnrdhn.fakestore.ui.cart.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,7 +54,8 @@ fun CartDetailScreen(
         CartDetailContent(
             state = vm.state,
             onItemAdd = { vm.onItemAdd(it) },
-            onItemRemove = { vm.onItemRemove(it) }
+            onItemRemove = { vm.onItemRemove(it) },
+            onCheckoutClicked = { vm.checkout() }
         )
     }
 }
@@ -52,36 +64,90 @@ fun CartDetailScreen(
 fun CartDetailContent(
     state: CartDetailState = CartDetailState(),
     onItemAdd: (CartItemModel) -> Unit = {},
-    onItemRemove: (CartItemModel) -> Unit = {}
+    onItemRemove: (CartItemModel) -> Unit = {},
+    onCheckoutClicked: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(
-                state = rememberScrollState()
-            )
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
-            modifier = Modifier.wrapContentHeight()
+            modifier = Modifier
+                .weight(1f)
+                .padding(16.dp)
+                .verticalScroll(
+                    state = rememberScrollState()
+                )
         ) {
-            Text(
-                text = "Shopping List",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+            Column(
+                modifier = Modifier.wrapContentHeight()
+            ) {
+                Text(
+                    text = "Shopping List",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Column(
+                    modifier = Modifier
+                        .padding(top = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    if (state.cartItems.isNotEmpty()) {
+                        state.cartItems.forEach { item ->
+                            CartDetailItemLayout(
+                                item = item,
+                                onItemAdd = onItemAdd,
+                                onItemRemove = onItemRemove
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = stringResource(R.string.shopping_list_empty_message)
+                        )
+                    }
+                }
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.background
+                )
+        ) {
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter),
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Column(
                 modifier = Modifier
-                    .padding(top = 16.dp),
+                    .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                state.cartItems.forEach { item ->
-                    CartDetailItemLayout(
-                        item = item,
-                        onItemAdd = onItemAdd,
-                        onItemRemove = onItemRemove
-                    )
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = state.cartItems.isNotEmpty(),
+                    onClick = onCheckoutClicked
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(20.dp),
+                            imageVector = Icons.Default.ShoppingCart,
+                            contentDescription = null
+                        )
+
+                        Text(
+                            text = stringResource(R.string.checkout_button_text),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
                 }
             }
         }
