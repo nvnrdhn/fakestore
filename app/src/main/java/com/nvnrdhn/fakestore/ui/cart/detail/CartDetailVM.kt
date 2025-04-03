@@ -1,6 +1,7 @@
 package com.nvnrdhn.fakestore.ui.cart.detail
 
 import androidx.lifecycle.viewModelScope
+import com.nvnrdhn.fakestore.helper.NavigationHelper
 import com.nvnrdhn.fakestore.model.CartItemModel
 import com.nvnrdhn.fakestore.repo.cart.CartRepo
 import com.nvnrdhn.fakestore.ui.base.BaseVM
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartDetailVM @Inject constructor(
-    private val cartRepo: CartRepo
+    private val cartRepo: CartRepo,
+    private val navigationHelper: NavigationHelper
 ) : BaseVM() {
     val state = CartDetailState()
 
@@ -39,6 +41,6 @@ class CartDetailVM @Inject constructor(
     }
 
     fun checkout() {
-
+        navigationHelper.navigateToCartSummary()
     }
 }

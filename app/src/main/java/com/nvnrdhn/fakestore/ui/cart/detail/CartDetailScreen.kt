@@ -82,7 +82,7 @@ fun CartDetailContent(
                 modifier = Modifier.wrapContentHeight()
             ) {
                 Text(
-                    text = "Shopping List",
+                    text = stringResource(R.string.shopping_list_title),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )

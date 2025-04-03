@@ -21,4 +21,8 @@
     <string name="shopping_list_title">"Shopping List"</string>
     <string name="shopping_list_empty_message">"Your shopping cart is empty"</string>
     <string name="checkout_button_text">"Checkout"</string>
+    <string name="title_activity_cart_summary">Order Summary</string>
+    <string name="order_summary_title">"Your order summary:"</string>
+    <string name="total_price_text">"Total Price:"</string>
+    <string name="item_order_price_text">"%1$s x%2$d"</string>
 </resources>
