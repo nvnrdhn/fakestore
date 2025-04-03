@@ -1,6 +1,5 @@
 package com.nvnrdhn.fakestore.ui.product.detail
 
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,12 +16,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +29,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
@@ -49,14 +44,13 @@ import com.nvnrdhn.fakestore.model.PriceModel
 import com.nvnrdhn.fakestore.model.ProductModel
 import com.nvnrdhn.fakestore.ui.base.BaseScreen
 import com.nvnrdhn.fakestore.ui.base.BaseScreen_Preview
+import com.nvnrdhn.fakestore.ui.base.topbar.BaseTopBar
 
 @Composable
 fun ProductDetailScreen(
     vm: ProductDetailVM = viewModel(),
     productId: Int
 ) {
-    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-
     LaunchedEffect(vm, productId) {
         vm.fetchProductDetail(productId)
     }
@@ -65,14 +59,11 @@ fun ProductDetailScreen(
         vm = vm,
         topBar = {
             ProductDetailTopBar(
-                onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
                 onCartClicked = { vm.onCartClicked() }
             )
         }
-    ) { innerPadding ->
+    ) {
         ProductDetailContent(
-            modifier = Modifier
-                .fillMaxSize(),
             state = vm.state,
             onAddToCartClicked = { vm.addToCart() }
         )
@@ -82,14 +73,13 @@ fun ProductDetailScreen(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ProductDetailContent(
-    modifier: Modifier = Modifier,
     state: ProductDetailState = ProductDetailState(),
     onAddToCartClicked: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
 
     Column (
-        modifier = modifier
+        modifier = Modifier.fillMaxSize()
     ) {
         Box(
             modifier = Modifier
@@ -239,23 +229,12 @@ fun ProductDetailContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ProductDetailTopBar(
-    onCartClicked: () -> Unit = {},
-    onBackPressed: () -> Unit = {}
+    onCartClicked: () -> Unit = {}
 ) {
-    CenterAlignedTopAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp
-            ),
-        title = {
-            Text(
-                text = stringResource(id = R.string.title_activity_product_detail)
-            )
-        },
+    BaseTopBar(
+        title = stringResource(id = R.string.title_activity_product_detail),
         actions = {
             IconButton(
                 modifier = Modifier
@@ -265,16 +244,6 @@ private fun ProductDetailTopBar(
             ) {
                 Icon(
                     imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = null
-                )
-            }
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = onBackPressed
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = null
                 )
             }
