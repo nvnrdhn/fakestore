@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -57,6 +58,9 @@ fun ProductListScreen(
             ProductListTopBar(
                 onProfileClicked = { vm.toggleProfileSheet() }
             )
+        },
+        bottomBar = {
+            ProductListBottomBar()
         },
         floatingActionButton = {
             ProductCartButton(
@@ -151,12 +155,18 @@ private fun ProductListTopBar(
 }
 
 @Composable
+private fun ProductListBottomBar() {
+    NavigationBar {
+
+    }
+}
+
+@Composable
 private fun ProductCartButton(
     onClicked: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
-            .padding(4.dp)
             .size(48.dp)
             .background(
                 color = MaterialTheme.colorScheme.primary,
@@ -172,17 +182,6 @@ private fun ProductCartButton(
             tint = MaterialTheme.colorScheme.onPrimary,
             contentDescription = null
         )
-
-        Text(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .background(
-                    color = MaterialTheme.colorScheme.tertiary,
-                    shape = RoundedCornerShape(100)
-                ),
-            text = "50",
-            color = MaterialTheme.colorScheme.onTertiary
-        )
     }
 }
 
@@ -192,6 +191,9 @@ fun ProductListScreen_Preview() {
     BaseScreen_Preview(
         topBar = {
             ProductListTopBar()
+        },
+        bottomBar = {
+            ProductListBottomBar()
         },
         floatingActionButton = {
             ProductCartButton()

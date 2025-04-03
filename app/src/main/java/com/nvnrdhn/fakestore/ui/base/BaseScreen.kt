@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
@@ -28,12 +29,14 @@ import java.net.UnknownHostException
 fun BaseScreen_Preview(
     vm: BaseVM = object : BaseVM() {},
     topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable () -> Unit = { Text(text = "Hello, World!") }
 ) {
     BaseScreen(
         vm = vm,
         topBar = topBar,
+        bottomBar = bottomBar,
         floatingActionButton = floatingActionButton
     ) { content() }
 }
@@ -42,14 +45,18 @@ fun BaseScreen_Preview(
 fun BaseScreen(
     vm: BaseVM,
     topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
+    floatingActionButtonPosition: FabPosition = FabPosition.Center,
     onConnectionRetry: () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     FakeStoreTheme {
         Scaffold(
             topBar = topBar,
+            bottomBar = bottomBar,
             floatingActionButton = floatingActionButton,
+            floatingActionButtonPosition = floatingActionButtonPosition,
             snackbarHost = { SnackbarHost(hostState = vm.snackbarHostState) }
         ) { innerPadding ->
             Box(
