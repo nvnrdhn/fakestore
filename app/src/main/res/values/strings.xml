@@ -25,4 +25,7 @@
     <string name="order_summary_title">"Your order summary:"</string>
     <string name="total_price_text">"Total Price:"</string>
     <string name="item_order_price_text">"%1$s x%2$d"</string>
+    <string name="sort_by_text">"Sort by:"</string>
+    <string name="sort_by_name_text">"Name"</string>
+    <string name="sort_by_category_text">"Category"</string>
 </resources>

@@ -47,7 +47,7 @@ fun BaseScreen(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
-    floatingActionButtonPosition: FabPosition = FabPosition.Center,
+    floatingActionButtonPosition: FabPosition = FabPosition.End,
     onConnectionRetry: () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {

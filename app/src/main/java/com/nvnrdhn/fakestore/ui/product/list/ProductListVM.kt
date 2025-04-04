@@ -25,11 +25,14 @@ class ProductListVM @Inject constructor(
         loading = true
 
         productRepo.getProductList()
-            .map { productUseCase.mapProductResponse(it) }
+            .map {
+                state.productList = productUseCase.mapProductResponse(it)
+                productUseCase.getSortedProductList(state.productList, state.sortBy)
+            }
             .flowOn(Dispatchers.IO)
             .onEach {
-                state.productList.clear()
-                state.productList.addAll(it)
+                state.displayList.clear()
+                state.displayList.addAll(it)
             }
             .onCompletion {
                 loading = false
@@ -47,5 +50,11 @@ class ProductListVM @Inject constructor(
 
     fun onProductClicked(productId: Int) {
         navigationHelper.navigateToProductDetail(productId)
+    }
+
+    fun sortProduct(sortBy: ProductListState.SortBy) {
+        state.sortBy = sortBy
+        state.displayList.clear()
+        state.displayList.addAll(productUseCase.getSortedProductList(state.productList, state.sortBy))
     }
 }

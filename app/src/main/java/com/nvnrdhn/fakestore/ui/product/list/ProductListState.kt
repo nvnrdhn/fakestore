@@ -8,5 +8,11 @@ import com.nvnrdhn.fakestore.model.ProductModel
 
 class ProductListState {
     var isProfileSheetVisible by mutableStateOf(false)
-    val productList = mutableStateListOf<ProductModel>()
+    var productList = listOf<ProductModel>()
+    val displayList = mutableStateListOf<Any>()
+    var sortBy by mutableStateOf(SortBy.Name)
+
+    enum class SortBy {
+        Name, Category, Price, Rating
+    }
 }
