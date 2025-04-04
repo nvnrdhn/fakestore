@@ -3,8 +3,10 @@ package com.nvnrdhn.fakestore.ui.product.list
 import androidx.lifecycle.viewModelScope
 import com.nvnrdhn.fakestore.helper.NavigationHelper
 import com.nvnrdhn.fakestore.repo.product.ProductRepo
+import com.nvnrdhn.fakestore.repo.user.UserRepo
 import com.nvnrdhn.fakestore.ui.base.BaseVM
 import com.nvnrdhn.fakestore.usecase.ProductUseCase
+import com.nvnrdhn.fakestore.usecase.ProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -17,9 +19,21 @@ import javax.inject.Inject
 class ProductListVM @Inject constructor(
     private val navigationHelper: NavigationHelper,
     private val productRepo: ProductRepo,
-    private val productUseCase: ProductUseCase
+    private val userRepo: UserRepo,
+    private val productUseCase: ProductUseCase,
+    private val profileUseCase: ProfileUseCase
 ) : BaseVM() {
     val state = ProductListState()
+
+    fun fetchProfileData() {
+        state.profileLoading = true
+
+        userRepo.getUsers()
+            .flowOn(Dispatchers.IO)
+            .onEach { state.profileData = profileUseCase.getProfileData(it) }
+            .onCompletion { state.profileLoading = false }
+            .launchSafelyIn(viewModelScope)
+    }
 
     fun fetchProductList() {
         loading = true

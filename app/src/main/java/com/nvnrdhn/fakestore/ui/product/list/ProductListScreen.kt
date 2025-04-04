@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,7 +27,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -42,19 +40,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nvnrdhn.fakestore.R
-import com.nvnrdhn.fakestore.datamodel.ProductDataModel
 import com.nvnrdhn.fakestore.model.PriceModel
 import com.nvnrdhn.fakestore.model.ProductModel
 import com.nvnrdhn.fakestore.ui.base.BaseScreen
 import com.nvnrdhn.fakestore.ui.base.BaseScreen_Preview
 import com.nvnrdhn.fakestore.ui.base.topbar.BaseTopBar
 import com.nvnrdhn.fakestore.ui.product.list.item.ProductItemLayout
+import com.nvnrdhn.fakestore.ui.profile.ProfileBottomSheet
 
 @Composable
 fun ProductListScreen(
     vm: ProductListVM = viewModel()
 ) {
     LaunchedEffect(vm) {
+        vm.fetchProfileData()
         vm.fetchProductList()
     }
 
@@ -194,19 +193,15 @@ private fun ProductListContent(
         }
 
         if (state.isProfileSheetVisible) {
-            ModalBottomSheet(
+            ProfileBottomSheet(
                 modifier = Modifier.padding(
                     top = innerPadding.calculateTopPadding()
                 ),
                 onDismissRequest = onProfileSheetDismissed,
-                sheetState = profileSheetState
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxHeight()
-                ) {
-                    Text("this is profile bottom sheet")
-                }
-            }
+                sheetState = profileSheetState,
+                profileData = state.profileData,
+                loading = state.profileLoading
+            )
         }
     }
 }
