@@ -3,17 +3,20 @@
 package com.nvnrdhn.fakestore.ui.product.list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,7 +27,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -33,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -43,12 +46,14 @@ import com.nvnrdhn.fakestore.ui.base.BaseScreen
 import com.nvnrdhn.fakestore.ui.base.BaseScreen_Preview
 import com.nvnrdhn.fakestore.ui.base.topbar.BaseTopBar
 import com.nvnrdhn.fakestore.ui.product.list.item.ProductItemLayout
+import com.nvnrdhn.fakestore.ui.profile.ProfileBottomSheet
 
 @Composable
 fun ProductListScreen(
     vm: ProductListVM = viewModel()
 ) {
     LaunchedEffect(vm) {
+        vm.fetchProfileData()
         vm.fetchProductList()
     }
 
@@ -58,9 +63,6 @@ fun ProductListScreen(
             ProductListTopBar(
                 onProfileClicked = { vm.toggleProfileSheet() }
             )
-        },
-        bottomBar = {
-            ProductListBottomBar()
         },
         floatingActionButton = {
             ProductCartButton(
@@ -75,7 +77,8 @@ fun ProductListScreen(
             state = vm.state,
             onProfileSheetDismissed = { vm.toggleProfileSheet() },
             innerPadding = innerPadding,
-            onProductClicked = { vm.onProductClicked(it) }
+            onProductClicked = { vm.onProductClicked(it) },
+            onSortByClicked = { vm.sortProduct(it) }
         )
     }
 }
@@ -85,7 +88,8 @@ private fun ProductListContent(
     state: ProductListState = ProductListState(),
     onProfileSheetDismissed: () -> Unit = {},
     innerPadding: PaddingValues = PaddingValues(),
-    onProductClicked: (Int) -> Unit = {}
+    onProductClicked: (Int) -> Unit = {},
+    onSortByClicked: (ProductListState.SortBy) -> Unit = {}
 ) {
     val lazyListState = rememberLazyStaggeredGridState()
     val profileSheetState = rememberModalBottomSheetState(
@@ -95,6 +99,48 @@ private fun ProductListContent(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.sort_by_text)
+            )
+
+            ProductListState.SortBy.entries.forEach { sortBy ->
+                Box(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .clickable { onSortByClicked(sortBy) }
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(6.dp)
+                        )
+                        .background(
+                            color = if (state.sortBy == sortBy) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.surface
+                            },
+                            shape = RoundedCornerShape(6.dp)
+                        )
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp),
+                        text = sortBy.name,
+                        color = if (state.sortBy == sortBy) {
+                            MaterialTheme.colorScheme.onPrimary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        }
+                    )
+                }
+            }
+        }
         LazyVerticalStaggeredGrid(
             modifier = Modifier.fillMaxSize(),
             state = lazyListState,
@@ -103,28 +149,59 @@ private fun ProductListContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
-            items(state.productList) { item ->
-                ProductItemLayout(
-                    item = item,
-                    onClicked = { onProductClicked(item.id) }
-                )
+            items(
+                items = state.displayList,
+                span = {
+                    if (it is ProductModel) {
+                        StaggeredGridItemSpan.SingleLane
+                    } else {
+                        StaggeredGridItemSpan.FullLine
+                    }
+                }
+            ) { item ->
+                when (item) {
+                    is ProductModel -> {
+                        ProductItemLayout(
+                            item = item,
+                            onClicked = { onProductClicked(item.id) }
+                        )
+                    }
+
+                    is String -> {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = RoundedCornerShape(6.dp)
+                                )
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 6.dp),
+                                text = item,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    }
+                }
             }
         }
 
         if (state.isProfileSheetVisible) {
-            ModalBottomSheet(
+            ProfileBottomSheet(
                 modifier = Modifier.padding(
                     top = innerPadding.calculateTopPadding()
                 ),
                 onDismissRequest = onProfileSheetDismissed,
-                sheetState = profileSheetState
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxHeight()
-                ) {
-                    Text("this is profile bottom sheet")
-                }
-            }
+                sheetState = profileSheetState,
+                profileData = state.profileData,
+                loading = state.profileLoading
+            )
         }
     }
 }
@@ -201,7 +278,7 @@ fun ProductListScreen_Preview() {
     ) {
         ProductListContent(
             state = ProductListState().apply {
-                productList.addAll(
+                displayList.addAll(
                     listOf(
                         ProductModel(
                             id = 1,
